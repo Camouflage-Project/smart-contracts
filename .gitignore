@@ -128,3 +128,4 @@ out/
 
 ### Hardhat ###
 artifacts
+cache
