@@ -15,8 +15,27 @@ task('accounts', 'Prints the list of accounts', async (args, hre) => {
     console.log(await account.address);
   }
 });
-
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
 module.exports = {
+  defaultNetwork: 'hardhat',
+  networks: {
+    hardhat: {
+    },
+    mumbai: {
+      url: process.env.MUMBAI_RPC,
+      accounts: {
+        mnemonic: process.env.SEED_PHRASE
+      }
+    },
+    goerli: {
+      url: process.env.GOERLI_RPC,
+      accounts: {
+        mnemonic: process.env.SEED_PHRASE
+      }
+    }
+  },
   solidity: {
     version: '0.8.0',
     settings: {
@@ -26,10 +45,5 @@ module.exports = {
       },
     },
   },
-  networks: {
-    mumbai: {
-      url: process.env.MUMBAI_RPC,
-      accounts: [`0x${process.env.WALLET_PRIVATE_KEY}`],
-    },
-  },
+  
 };

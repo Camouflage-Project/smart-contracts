@@ -7,7 +7,7 @@
     "lint": "npx hardhat check",
     "es_lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
-    "test": "hh test",
+    "test": "npx hardhat test",
     "node": "npx hardhat node"
   },
   "author": "",
