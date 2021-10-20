@@ -9,7 +9,7 @@ async function main() {
   const accounts = await ethers.getSigners();
   const network = await ethers.provider.getNetwork();
   const deployer = accounts[0];
-  const deployerAddress = await deployer.getAddress();
+  const deployerAddress = deployerAddress;
   console.log(`Network name: ${network.name}`);
   console.log(`Chain Id: ${network.chainId}`);
   console.log(`Deployer address (accounts[0]): ${deployerAddress}`);

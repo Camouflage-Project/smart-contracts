@@ -11,6 +11,7 @@ There list of contracts is the following:
 - ResidentialProxy.sol
 - PayoutContract.sol
 - StakingContract.sol
+- StakingContractFactory.sol
 - TreasuryContract.sol
 - CamoToken.sol
 
@@ -32,11 +33,28 @@ There list of contracts is the following:
    - Created by the Residential Proxy Factory. The creator of the residential proxy can attach to a particular node as well as detach and attach to a new one.
    - As soon as a residential proxy attaches to a particular node, his address and timestamp of the attachment is recorded. At the moment he detaches a timestamp of the    detachment is recorded.
 
+- <b> Staking Contract </b>
+    - Has the address of the Camo token and the Node Operator Factory.
+
+- <b> Staking Contract Factory </b>
+    - Responsible for creating staking contracts for each node operator. Contains a map of user address to staking contract address.
+
+## Staking workflow
+In order to create a Node Operator, an address needs to prove it staked the minimum of 500 Camo Tokens into a time locked contract. 
+
 ## Soldity Design patterns
 Smart contract were developed in accordance with the following [design patterns](https://github.com/fravoll/solidity-patterns).
 
 ## Testing
 For running all tests on a local hardhat network use `npm test`. For running individual tests specify path to the test file: `npm test -- <path-to-test-file>`
 
+## Testing Flow
+1. Deploy Camo ERC-20 token.
+2. Deploy staking contract factory.
+3. Deploy node operator factory which has a variable pointing to the staking contract factory.
+4. Node operator calls approve and deposit functions on the staking contract.
+5. A node opeartor can be created.
+
 ## Deployment
-Deployment is available by executing `deploy.sh` with the desired network parameter.Available networks are configured inside `hardhat.config.ts`.
+Deployment is available by executing `deploy.sh` with the desired network parameter. Available networks are configured inside `hardhat.config.ts`.
+

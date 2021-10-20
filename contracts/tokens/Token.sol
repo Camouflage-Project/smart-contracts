@@ -1,6 +1,5 @@
 pragma solidity ^0.8.0;
 
-
 // This is the main building block for smart contracts.
 contract Token {
     // Some string type variables to identify the token.
@@ -22,7 +21,7 @@ contract Token {
      *
      * The `constructor` is executed only once when the contract is created.
      */
-    constructor(string memory _name, string memory _symbol ) {
+    constructor(string memory _name, string memory _symbol) {
         name = _name;
         symbol = _symbol;
         // The totalSupply is assigned to transaction sender, which is the account
