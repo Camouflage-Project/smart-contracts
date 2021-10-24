@@ -52,13 +52,8 @@ describe('Full test', function () {
     nodeOperatorFactory = await helpers.deployNodeOperatorFactory(deployer, camoToken.address, stakingContractFactory.address);
   });
 
-  it(`should successfully complete the flow:\n
-        1) Deploy Camo Token and Staking Contract
-        2) Create two nodeOperators
-  `, async function () {
+  it(`should successfully complete the flow`, async function () {
         console.log(`Signers are: \n\tMain deployer: ${deployerAddress}\n\tAlice: ${aliceAddress}`)
-        const camoSupply =  await (camoToken.totalSupply()) / (10 ** 18)
-        console.log(`Supply of Camo is: ${camoSupply}`);
 
         // Deployer has all the supply of Camo token, he transfers 1000 Camo tokens to Alice.
         await helpers.transferERC20Token(deployer, aliceAddress, camoToken, "1000");

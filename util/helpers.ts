@@ -13,12 +13,12 @@ export async function deployNodeOperatorFactory(deployer: Signer, camoTokenAddre
   return nodeOperatorFactory;
 }
 
-export async function deployCamoToken(deployer: Signer, name: String, symbol: String, supply: string, confirmations: number = config.confirmationsForDeploy): Promise<Contract> {
+export async function deployCamoToken(deployer: Signer, name: string, symbol: string, supply: string, confirmations: number = config.confirmationsForDeploy): Promise<Contract> {
   const supplyWei = ethers.utils.parseEther(supply);
   const CamoToken = await ethers.getContractFactory('CamoToken', deployer);
   const camoToken = await CamoToken.deploy(name, symbol, supplyWei);
   await ethers.provider.waitForTransaction(camoToken.deployTransaction.hash, confirmations);
-  console.log(`\CamoToken deployed\n\tAt address: ${camoToken.address}`);
+  console.log(`\CamoToken deployed\n\tAt address: ${camoToken.address}\n\tName:${await camoToken.name()}\n\tSymbol:${await camoToken.symbol()}\n\tSupply:${await camoToken.totalSupply()}`);
   return camoToken;
 }
 

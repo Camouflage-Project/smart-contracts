@@ -5,5 +5,6 @@
 # > If running local node, value should be: localhost
 # > If need to use hardhat in-memory chain kept alive only while the process is running, value should be: hardhat
 export NETWORK=hardhat
+export CAMO_TOKEN=
 
 npx hardhat run scripts/deploy-test-env.ts --network $NETWORK
