@@ -34,7 +34,19 @@ module.exports = {
       accounts: {
         mnemonic: process.env.SEED_PHRASE
       }
-    }
+    },
+    eth_mainnet: {
+      url: process.env.ETH_MAINNET_RPC,
+      accounts: {
+        mnemonic: process.env.SEED_PHRASE
+      }
+    },
+    matic_mainnet: {
+      url: process.env.MATIC_RPC,
+      accounts: {
+        mnemonic: process.env.SEED_PHRASE
+      }
+    },
   },
   solidity: {
     version: '0.8.0',
