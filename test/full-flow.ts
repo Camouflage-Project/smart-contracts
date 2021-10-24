@@ -107,7 +107,7 @@ describe('Full test', function () {
         expect(await helpers.getBalance(stablecoin, proxy2Address)).to.equal("225.0");
         expect(await helpers.getBalance(stablecoin, aliceNodeOperator.address)).to.equal("0.0");
 
-        // Other node cannot call alice's payout function ()
+        // Other node cannot call alice's payout function
         await expect(helpers.payout(deployer, aliceNodeOperator)).to.be.revertedWith("You are not the owner of this Node Operator");
   })
 });
