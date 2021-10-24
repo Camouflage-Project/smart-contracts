@@ -1,3 +1,10 @@
+<br/>
+<p align="center">
+<img src="https://user-images.githubusercontent.com/38017754/138603052-1b87155f-a03c-4cbc-aac3-f56301cda473.png" width="225" alt="Camouflage logo">
+</a>
+</p>
+<br/>
+
 # Camouflage Contracts
 
 Camouflage Protocol v1.0 written in Solidity language.
