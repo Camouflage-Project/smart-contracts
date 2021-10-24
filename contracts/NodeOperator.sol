@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract NodeOperator {
-
     event ProxyRegistered(
         address indexed proxy,
         address nodeOperator,
@@ -18,11 +17,11 @@ contract NodeOperator {
     // ERC20 stablecoin token contract being held
     IERC20 private immutable _stablecoin;
 
-    mapping(uint => address) public proxiesCount;
+    mapping(uint256 => address) public proxiesCount;
     mapping(address => address) public proxies;
-    uint public totalProxies = 0;
+    uint256 public totalProxies = 0;
 
-    modifier onlyOwner {
+    modifier onlyOwner() {
         require(
             msg.sender == _owner,
             "You are not the owner of this Node Operator"
@@ -38,7 +37,11 @@ contract NodeOperator {
         _;
     }
 
-    constructor(address ownerAddress, string memory name, address stablecoinAddress) {
+    constructor(
+        address ownerAddress,
+        string memory name,
+        address stablecoinAddress
+    ) {
         _owner = ownerAddress;
         _name = name;
         _factory = msg.sender;
@@ -64,7 +67,10 @@ contract NodeOperator {
     }
 
     function registerProxy() public {
-        require (proxies[msg.sender] == address(0), "Proxy is already registered with this node operator");
+        require(
+            proxies[msg.sender] == address(0),
+            "Proxy is already registered with this node operator"
+        );
         proxiesCount[totalProxies] = msg.sender;
         proxies[msg.sender] = msg.sender;
         ++totalProxies;
@@ -73,10 +79,11 @@ contract NodeOperator {
 
     function payout() external onlyOwner {
         uint256 stablecoinBalance = stablecoin().balanceOf(address(this));
-        uint256 nodePayout = stablecoinBalance * 50 / 100;
-        uint256 proxyPayoutAmount = (stablecoinBalance - nodePayout) / totalProxies;
-        for (uint i = 0; i < totalProxies; i++) {
-            // Here msg.sender should be the address(this) 
+        uint256 nodePayout = (stablecoinBalance * 50) / 100;
+        uint256 proxyPayoutAmount = (stablecoinBalance - nodePayout) /
+            totalProxies;
+        for (uint256 i = 0; i < totalProxies; i++) {
+            // Here msg.sender should be the address(this)
             stablecoin().transfer(proxiesCount[i], proxyPayoutAmount);
         }
         stablecoin().transfer(owner(), nodePayout);

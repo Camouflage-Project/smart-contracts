@@ -67,6 +67,18 @@ Tests are located in the [test](https://github.com/Camouflage-Project/smart-cont
 
 For running all tests on a local hardhat network use `npm test`.
 
+## Linting
+
+For linting of `.ts` files use
+```
+npm run lint-and-fix
+```
+
+For linting of `.sol` files use
+```
+npm run prettier
+```
+
 ## Contract types
 
 There list of contracts is the following:

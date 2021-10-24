@@ -35,13 +35,13 @@ contract StakingContract is TokenTimelock {
     }
 
     function depositCamoTokens(uint256 _amount) external payable {
-        uint stakedAmount = contractBalance();
+        uint256 stakedAmount = contractBalance();
         if (stakedAmount == 0) {
             require(
-            _amount >= minStakingAmount,
-            "Trying to stake less than the minimum staking amount"
-        );
-        }        
+                _amount >= minStakingAmount,
+                "Trying to stake less than the minimum staking amount"
+            );
+        }
         address from = msg.sender;
         address to = address(this);
 

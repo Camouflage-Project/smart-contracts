@@ -1,5 +1,5 @@
 import {ethers} from 'hardhat';
-import { Contract } from "ethers";
+import {Contract} from 'ethers';
 import * as helpers from '../util/helpers';
 
 async function main() {
@@ -12,10 +12,10 @@ async function main() {
   console.log(`Chain Id: ${network.chainId}`);
   console.log(`Deployer address (accounts[0]): ${deployerAddress}`);
   console.log(`Deployer balance (accounts[0]):`, (await ethers.provider.getBalance(deployerAddress)).toString());
-  console.log(`Network is: ${process.env.NETWORK}`)
+  console.log(`Network is: ${process.env.NETWORK}`);
 
   const deployedToken: Contract = (process.env.CAMO_TOKEN) ?
-    await ethers.getContractAt("CamoToken", process.env.CAMO_TOKEN) :
+    await ethers.getContractAt('CamoToken', process.env.CAMO_TOKEN) :
     await helpers.deployCamoToken(deployer, 'Camouflage', 'Camo', '1000');
 }
 

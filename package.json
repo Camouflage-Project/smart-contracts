@@ -4,12 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "npx hardhat check",
-    "es_lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "test": "npx hardhat test",
-    "prettier": "prettier --write contracts/**/*.sol",
-    "node": "npx hardhat node"
+    "prettier": "prettier --write contracts/**/*.sol"
   },
   "author": "",
   "license": "ISC",

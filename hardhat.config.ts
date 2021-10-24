@@ -26,26 +26,26 @@ module.exports = {
     mumbai: {
       url: process.env.MUMBAI_RPC,
       accounts: {
-        mnemonic: process.env.SEED_PHRASE
-      }
+        mnemonic: process.env.SEED_PHRASE,
+      },
     },
     goerli: {
       url: process.env.GOERLI_RPC,
       accounts: {
-        mnemonic: process.env.SEED_PHRASE
-      }
+        mnemonic: process.env.SEED_PHRASE,
+      },
     },
     eth_mainnet: {
       url: process.env.ETH_MAINNET_RPC,
       accounts: {
-        mnemonic: process.env.SEED_PHRASE
-      }
+        mnemonic: process.env.SEED_PHRASE,
+      },
     },
     matic_mainnet: {
       url: process.env.MATIC_RPC,
       accounts: {
-        mnemonic: process.env.SEED_PHRASE
-      }
+        mnemonic: process.env.SEED_PHRASE,
+      },
     },
   },
   solidity: {
@@ -58,6 +58,6 @@ module.exports = {
     },
   },
   gasReporter: {
-    enabled: (process.env.REPORT_GAS) ? true : false
-  }
+    enabled: (process.env.REPORT_GAS) ? true : false,
+  },
 };
