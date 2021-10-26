@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint-and-fix": "eslint . --ext .ts --fix",
+    "lint": "eslint . --ext .ts --fix",
     "test": "npx hardhat test",
-    "prettier": "prettier --write contracts/**/*.sol"
+    "prettier-sol": "prettier --write contracts/**/*.sol",
+    "prettier-ts": "npx prettier --write ."
   },
   "author": "",
   "license": "ISC",
@@ -23,13 +24,14 @@
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
     "eth-revert-reason": "^1.0.3",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.4.6",
     "hardhat": "^2.6.5",
     "hardhat-contract-sizer": "^2.0.3",
     "hardhat-gas-reporter": "^1.0.4",
-    "prettier": "^2.4.1",
+    "prettier": "2.4.1",
     "prettier-plugin-solidity": "^1.0.0-beta.18",
     "publish": "^0.6.0",
     "ts-node": "^9.1.1",
