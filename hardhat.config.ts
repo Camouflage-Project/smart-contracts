@@ -3,6 +3,7 @@ import '@nomiclabs/hardhat-waffle';
 import '@nomiclabs/hardhat-solhint';
 import 'hardhat-gas-reporter';
 import 'hardhat-contract-sizer';
+import '@nomiclabs/hardhat-web3';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

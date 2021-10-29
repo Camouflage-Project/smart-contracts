@@ -39,6 +39,14 @@ export async function deployStakingContractFactory(deployer: Signer, camoTokenAd
   return stakingContractFactory;
 }
 
+export async function deployTokenTimelock(deployer: Signer, camoTokenAddress: String, confirmations: number = config.confirmationsForDeploy): Promise<Contract> {
+  const tokenTimelockFactory = await ethers.getContractFactory('TokenTimelock', deployer);
+  const tokenTimelock = await tokenTimelockFactory.deploy(camoTokenAddress);
+  await ethers.provider.waitForTransaction(tokenTimelock.deployTransaction.hash, confirmations);
+  console.log(`\nTokenTimelock deployed\n\tAt address: ${tokenTimelock.address}`);
+  return tokenTimelock;
+}
+
 export async function createStakingContract(stakingContractFactory: Contract, staker: Signer, releaseTime: number): Promise<Contract> {
   const createStakingContractHash = await stakingContractFactory.connect(staker).newStakingContract(releaseTime); 
   const receipt = await ethers.provider.waitForTransaction(createStakingContractHash.hash); 
