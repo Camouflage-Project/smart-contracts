@@ -13,10 +13,14 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract TokenTimelock {
     using SafeERC20 for IERC20;
 
+    struct LockedTokenData {
+        uint256 amount;
+        uint256 releaseTime;
+    }
+
     address public owner;
     IERC20 private immutable _token;
-    mapping(address => uint256) public _beneficiaryReleaseTimes;
-    mapping(address => uint256) public _beneficiaryAmounts;
+    mapping(address => LockedTokenData) public _beneficiaries;
 
     constructor(IERC20 token_) {
         owner = msg.sender;
@@ -31,28 +35,26 @@ contract TokenTimelock {
     }
 
     /**
-     * @notice Locks tokens for beneficiary until release time.
+     * @notice Locks tokens for beneficiary until release time. Contract owner only function.
      */
     function lock(address beneficiary, uint256 releaseTime, uint256 amount) public virtual {
         require(msg.sender == owner, "TokenTimelock: this function can only be called by the owner");
         require(releaseTime > block.timestamp, "TokenTimelock: release time is before current time");
         require(amount <= token().balanceOf(address(this)), "TokenTimelock: amount is greater than the contract balance");
 
-        _beneficiaryReleaseTimes[beneficiary] = releaseTime;
-        _beneficiaryAmounts[beneficiary] = amount;
+        _beneficiaries[beneficiary] = LockedTokenData(amount, releaseTime);
     }
 
     /**
      * @notice Transfers tokens held by timelock to beneficiary.
      */
     function release(address beneficiary) public virtual {
-        require(block.timestamp >= _beneficiaryReleaseTimes[beneficiary], "TokenTimelock: current time is before release time");
+        require(block.timestamp >= _beneficiaries[beneficiary].releaseTime, "TokenTimelock: current time is before release time");
 
-        uint256 amount = _beneficiaryAmounts[beneficiary];
+        uint256 amount = _beneficiaries[beneficiary].amount;
         require(amount > 0, "TokenTimelock: no tokens to release");
 
         token().safeTransfer(beneficiary, amount);
-        delete _beneficiaryReleaseTimes[beneficiary];
-        delete _beneficiaryAmounts[beneficiary];
+        delete _beneficiaries[beneficiary];
     }
 }
