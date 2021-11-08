@@ -17,8 +17,6 @@ describe("Test full token timelock flow", function () {
   let camoToken: Contract;
   let timelock: Contract;
 
-
-
   beforeEach(async function () {
 
     [deployer, beneficiary1, beneficiary2] = await ethers.getSigners();
@@ -110,7 +108,7 @@ describe("Test full token timelock flow", function () {
       await expectRevert(helpers.release(deployer, timelock, beneficiary1Address), 'TokenTimelock: current time is before release time');
     });
 
-    it("Release tokens for beneficiary", async function () {
+    it("Releases tokens for beneficiary", async function () {
       const releaseTime = (await time.latest()).add(time.duration.seconds(2));
       const amount = '10000'
       await helpers.lock(deployer, timelock, beneficiary1Address, releaseTime.toString(), amount);
