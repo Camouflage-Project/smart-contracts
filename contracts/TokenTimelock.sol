@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "hardhat/console.sol";
 
 /**
- * @dev A token holder contract that will allow multiple beneficiaries to extract there
+ * @dev A token holder contract that will allow multiple beneficiaries to extract their
  * tokens after a given release time.
  * Similar to openzeppelin's TokenTimelock, but with the option of locking tokens for 
  * mulitple beneficiaries.
