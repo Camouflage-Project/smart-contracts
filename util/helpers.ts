@@ -1,5 +1,6 @@
 import {ethers} from 'hardhat';
 import {Contract, Signer} from 'ethers';
+import { BigNumber } from "@ethersproject/bignumber";
 
 const config = {
   confirmationsForDeploy: 1
@@ -40,7 +41,7 @@ export async function deployStakingContractFactory(deployer: Signer, camoTokenAd
 }
 
 export async function deployTokenTimelock(deployer: Signer, camoTokenAddress: String, confirmations: number = config.confirmationsForDeploy): Promise<Contract> {
-  const tokenTimelockFactory = await ethers.getContractFactory('TokenTimelock', deployer);
+  const tokenTimelockFactory = await ethers.getContractFactory('contracts/TokenTimelock.sol:TokenTimelock', deployer);
   const tokenTimelock = await tokenTimelockFactory.deploy(camoTokenAddress);
   await ethers.provider.waitForTransaction(tokenTimelock.deployTransaction.hash, confirmations);
   console.log(`\nTokenTimelock deployed\n\tAt address: ${tokenTimelock.address}`);
@@ -136,4 +137,35 @@ export async function createNodeOperator(
 
   export async function payout(node: Signer, nodeOperator: Contract) {
     await nodeOperator.connect(node).payout();
+  }
+
+  export async function getTimelockToken(owner: Signer, tokenTimelock: Contract) {
+    await tokenTimelock.connect(owner).token();
+  }
+
+  export async function lock(owner: Signer, tokenTimelock: Contract, address: string, releaseTime: string, amount: string) {
+    const releaseTimeBN = BigNumber.from(releaseTime);
+    const amountWei = ethers.utils.parseEther(amount);
+    await tokenTimelock.connect(owner).lock(address, releaseTimeBN, amountWei);
+  }
+
+  export async function release(owner: Signer, tokenTimelock: Contract, address: string) {
+    await tokenTimelock.connect(owner).release(address);
+  }
+
+  export async function getBeneficiary(owner: Signer, tokenTimelock: Contract, address: string): Promise<BeneficiaryData> {
+    const beneficiaryData =  await tokenTimelock.connect(owner).beneficiaries(address);
+    const amount: string = ethers.utils.formatEther(beneficiaryData.amount);
+    const releaseTime: string = beneficiaryData.releaseTime.toString();
+    return new BeneficiaryData(amount, releaseTime)
+  }
+
+  export class BeneficiaryData {
+    amount: string;
+    releaseTime: string;
+
+    constructor(amount: string, releaseTime: string) {
+      this.amount = amount
+      this.releaseTime = releaseTime
+    }
   }

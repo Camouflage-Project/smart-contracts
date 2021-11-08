@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "hardhat/console.sol";
 
 /**
  * @dev A token holder contract that will allow multiple beneficiaries to extract there
@@ -20,7 +21,7 @@ contract TokenTimelock {
 
     address public owner;
     IERC20 private immutable _token;
-    mapping(address => LockedTokenData) public _beneficiaries;
+    mapping(address => LockedTokenData) public beneficiaries;
 
     constructor(IERC20 token_) {
         owner = msg.sender;
@@ -41,20 +42,19 @@ contract TokenTimelock {
         require(msg.sender == owner, "TokenTimelock: this function can only be called by the owner");
         require(releaseTime > block.timestamp, "TokenTimelock: release time is before current time");
         require(amount <= token().balanceOf(address(this)), "TokenTimelock: amount is greater than the contract balance");
+        require(amount > 0, "TokenTimelock: amount is 0 or less");
 
-        _beneficiaries[beneficiary] = LockedTokenData(amount, releaseTime);
+        beneficiaries[beneficiary] = LockedTokenData(amount, releaseTime);
     }
 
     /**
      * @notice Transfers tokens held by timelock to beneficiary.
      */
     function release(address beneficiary) public virtual {
-        require(block.timestamp >= _beneficiaries[beneficiary].releaseTime, "TokenTimelock: current time is before release time");
+        require(block.timestamp >= beneficiaries[beneficiary].releaseTime, "TokenTimelock: current time is before release time");
 
-        uint256 amount = _beneficiaries[beneficiary].amount;
-        require(amount > 0, "TokenTimelock: no tokens to release");
-
+        uint256 amount = beneficiaries[beneficiary].amount;
         token().safeTransfer(beneficiary, amount);
-        delete _beneficiaries[beneficiary];
+        delete beneficiaries[beneficiary];
     }
 }
