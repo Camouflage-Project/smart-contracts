@@ -1,9 +1,11 @@
-import { task } from "hardhat/config";
-import "@nomiclabs/hardhat-waffle";
-import "@nomiclabs/hardhat-solhint";
-import "hardhat-gas-reporter";
-import "hardhat-contract-sizer";
-import * as dotenv from "dotenv";
+
+import {task} from 'hardhat/config';
+import '@nomiclabs/hardhat-waffle';
+import '@nomiclabs/hardhat-solhint';
+import 'hardhat-gas-reporter';
+import 'hardhat-contract-sizer';
+import '@nomiclabs/hardhat-web3';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
