@@ -20,14 +20,18 @@ contract NodeOperatorFactory {
     StakingContractFactory private immutable _stakingContractFactory;
     IERC20 private immutable _camoERC20Token;
 
-    constructor(address camoTokenAddress, address stakingContractFactoryAddress) {
+    constructor(address camoTokenAddress, address stakingContractFactoryAddress)
+    {
         _camoERC20Token = IERC20(camoTokenAddress);
         _stakingContractFactory = StakingContractFactory(
             stakingContractFactoryAddress
         );
     }
 
-    function create(string memory name, address stablecoin) public returns (address) {
+    function create(string memory name, address stablecoin)
+        public
+        returns (address)
+    {
         address stakingContract = _stakingContractFactory.getStakingContract(
             msg.sender
         );
@@ -35,7 +39,7 @@ contract NodeOperatorFactory {
             stakingContract != address(0),
             "There is no staking contract for node operator"
         );
-        
+
         require(
             _camoERC20Token.balanceOf(stakingContract) > 500,
             "Staking amount is lower that 500"

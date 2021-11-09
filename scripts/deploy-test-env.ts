@@ -1,7 +1,6 @@
-import {ethers} from 'hardhat';
-import {Contract} from 'ethers';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import { ethers } from "hardhat";
+import { Contract } from "ethers";
+import * as helpers from "../util/helpers";
 
 async function main() {
   // Used to get the list of accounts in the node we're connected to, it depends on the network,
@@ -9,27 +8,23 @@ async function main() {
   const accounts = await ethers.getSigners();
   const network = await ethers.provider.getNetwork();
   const deployer = accounts[0];
-  const deployerAddress = deployerAddress;
-  console.log(`Network name: ${network.name}`);
+  const deployerAddress = deployer.address;
   console.log(`Chain Id: ${network.chainId}`);
   console.log(`Deployer address (accounts[0]): ${deployerAddress}`);
-  console.log(`Deployer balance (accounts[0]):`, (await ethers.provider.getBalance(deployerAddress)).toString());
+  console.log(
+    `Deployer balance (accounts[0]):`,
+    (await ethers.provider.getBalance(deployerAddress)).toString()
+  );
+  console.log(`Network is: ${process.env.NETWORK}`);
 
-  const token = await ethers.getContractFactory('Token');
-  const deployedToken = await token.deploy(process.env.TOKEN_NAME, process.env.TOKEN_SYMBOL);
-  await ethers.provider.waitForTransaction(deployedToken.deployTransaction.hash, 1);
-  console.log(`Token is deployed at: ${deployedToken.address}`);
-  const tokenName = await deployedToken.name();
-  const tokenSymbol = await deployedToken.symbol();
-  const tokenOwner = await deployedToken.owner();
-  console.log(`Token name is: ${tokenName}`);
-  console.log(`Token symbol is: ${tokenSymbol}`);
-  console.log(`Token owner is: ${tokenOwner}`);
+  const deployedToken: Contract = process.env.CAMO_TOKEN
+    ? await ethers.getContractAt("CamoToken", process.env.CAMO_TOKEN)
+    : await helpers.deployCamoToken(deployer, "Camouflage", "Camo", "1000");
 }
 
 main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error(error);
-      process.exit(1);
-    });
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
