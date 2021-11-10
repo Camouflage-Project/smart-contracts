@@ -209,7 +209,5 @@ describe("Test full token timelock flow", function () {
       expect(+deletedBeneficiaryData.amount).to.equal(0);
       expect(+deletedBeneficiaryData.releaseTime).to.equal(0);
     });
-
-    it("Transfers all of the tokens back to the owner", async function () {});
   });
 });
