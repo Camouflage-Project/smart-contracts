@@ -83,6 +83,12 @@ For linting of `.ts` files use
 npm run lint-and-fix
 ```
 
+For linting of `.sol` files with the hardhat solhint plugin use
+
+```
+npm run hardhat-solhint
+```
+
 For formatting of `.sol` files use
 
 ```
