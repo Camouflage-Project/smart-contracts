@@ -1,12 +1,13 @@
 import { ethers } from "hardhat";
-import { Contract, Signer } from "ethers";
+import { Signer } from "ethers";
 import * as helpers from "../util/helpers";
 import { expect } from "chai";
+import { CamoToken, NodeOperator, NodeOperatorFactory, StakingContractFactory, USDC } from "../typechain-types";
 
 /* global describe, it, beforeEach */
 describe("Full test", function () {
   // ////// FACTORIES ////////
-  let nodeOperatorFactory: Contract;
+  let nodeOperatorFactory: NodeOperatorFactory;
 
   // ////// SIGNERS ////////
   let deployer: Signer;
@@ -23,9 +24,9 @@ describe("Full test", function () {
   let proxy2Address: string;
 
   // ////// CONTRACTS ////////
-  let camoToken: Contract;
-  let stakingContractFactory: Contract;
-  let stablecoin: Contract;
+  let camoToken: CamoToken;
+  let stakingContractFactory: StakingContractFactory;
+  let stablecoin: USDC;
 
   beforeEach(async function () {
     const accounts: Signer[] = await ethers.getSigners();
@@ -142,13 +143,13 @@ describe("Full test", function () {
       )}`
     );
 
-    const aliceNodeOperator: Contract = await helpers.createNodeOperator(
+    const aliceNodeOperator: NodeOperator = await helpers.createNodeOperator(
       alice,
       "Alice-Node-Operator",
       nodeOperatorFactory,
       stablecoin.address
     );
-    const deployerNodeOperator: Contract = await helpers.createNodeOperator(
+    const deployerNodeOperator: NodeOperator = await helpers.createNodeOperator(
       deployer,
       "My-Node-Operator",
       nodeOperatorFactory,

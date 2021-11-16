@@ -1,8 +1,9 @@
 import { ethers } from "hardhat";
-import { Contract, Signer } from "ethers";
+import { Signer } from "ethers";
 import * as helpers from "../util/helpers";
 import { expect } from "chai";
 import { time, expectRevert } from "@openzeppelin/test-helpers";
+import { CamoToken, TokenTimelock } from "../typechain-types";
 
 describe("Test full token timelock flow", function () {
   let deployer: Signer;
@@ -13,8 +14,8 @@ describe("Test full token timelock flow", function () {
   let beneficiary1Address: string;
   let beneficiary2Address: string;
 
-  let camoToken: Contract;
-  let timelock: Contract;
+  let camoToken: CamoToken;
+  let timelock: TokenTimelock;
 
   beforeEach(async function () {
     [deployer, beneficiary1, beneficiary2] = await ethers.getSigners();
