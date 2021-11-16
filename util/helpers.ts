@@ -1,6 +1,10 @@
 import { ethers } from "hardhat";
 import { Contract, Signer } from "ethers";
 import { BigNumber } from "@ethersproject/bignumber";
+import {
+  NodeOperatorFactory,
+  StakingContractFactory,
+} from "../typechain-types";
 
 const config = {
   confirmationsForDeploy: 1,
@@ -11,15 +15,15 @@ export async function deployNodeOperatorFactory(
   camoTokenAddress: String,
   stakingContractFactory: String,
   confirmations: number = config.confirmationsForDeploy
-): Promise<Contract> {
+): Promise<NodeOperatorFactory> {
   const NodeOperatorFactory = await ethers.getContractFactory(
     "NodeOperatorFactory",
     deployer
   );
-  const nodeOperatorFactory = await NodeOperatorFactory.deploy(
+  const nodeOperatorFactory = (await NodeOperatorFactory.deploy(
     camoTokenAddress,
     stakingContractFactory
-  );
+  )) as NodeOperatorFactory;
   await ethers.provider.waitForTransaction(
     nodeOperatorFactory.deployTransaction.hash,
     confirmations
@@ -115,9 +119,12 @@ export async function createStakingContract(
   staker: Signer,
   releaseTime: number
 ): Promise<Contract> {
-  const createStakingContractHash = await stakingContractFactory
+  const createStakingContractHash = await (
+    stakingContractFactory as StakingContractFactory
+  )
     .connect(staker)
     .newStakingContract(releaseTime);
+
   const receipt = await ethers.provider.waitForTransaction(
     createStakingContractHash.hash
   );
