@@ -9,8 +9,8 @@ const config = {
 
 export async function deployNodeOperatorFactory(
   deployer: Signer,
-  camoTokenAddress: String,
-  stakingContractFactory: String,
+  camoTokenAddress: string,
+  stakingContractFactory: string,
   confirmations: number = config.confirmationsForDeploy
 ): Promise<NodeOperatorFactory> {
   const NodeOperatorFactory = await ethers.getContractFactory(
@@ -70,7 +70,7 @@ export async function deployStablecoin(
 
 export async function deployStakingContractFactory(
   deployer: Signer,
-  camoTokenAddress: String,
+  camoTokenAddress: string,
   confirmations: number = config.confirmationsForDeploy
 ): Promise<StakingContractFactory> {
   const StakingContractFactory = await ethers.getContractFactory(
@@ -92,7 +92,7 @@ export async function deployStakingContractFactory(
 
 export async function deployTokenTimelock(
   deployer: Signer,
-  camoTokenAddress: String,
+  camoTokenAddress: string,
   confirmations: number = config.confirmationsForDeploy
 ): Promise<TokenTimelock> {
   const tokenTimelockFactory = await ethers.getContractFactory(
