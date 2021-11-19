@@ -61,6 +61,10 @@ Then you can install all the dependencies
 npm install
 ```
 
+## Static Typing with Typechain
+
+Typechain is used to get static typing for smart contracts in TS. In addition to generating smart contract ABIs, running `npx hardhat compile` will also generate the TS files required for this static typing.
+
 ## Deploy
 
 Deployment scripts are in the [scripts](https://github.com/Camouflage-Project/smart-contracts/blob/master/scripts) directory.
