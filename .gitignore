@@ -129,3 +129,6 @@ out/
 ### Hardhat ###
 artifacts
 cache
+
+###typechain###
+typechain-types
