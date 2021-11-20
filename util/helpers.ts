@@ -20,7 +20,7 @@ export async function deployNodeOperatorFactory(
   const nodeOperatorFactory = await NodeOperatorFactory.deploy(
     camoTokenAddress,
     stakingContractFactory
-  ) as NodeOperatorFactory;
+  );
   await ethers.provider.waitForTransaction(
     nodeOperatorFactory.deployTransaction.hash,
     confirmations
@@ -40,7 +40,7 @@ export async function deployCamoToken(
 ): Promise<CamoToken> {
   const supplyWei = ethers.utils.parseEther(supply);
   const CamoToken = await ethers.getContractFactory("CamoToken", deployer);
-  const camoToken = await CamoToken.deploy(name, symbol, supplyWei) as CamoToken;
+  const camoToken = await CamoToken.deploy(name, symbol, supplyWei);
   await ethers.provider.waitForTransaction(
     camoToken.deployTransaction.hash,
     confirmations
@@ -59,7 +59,7 @@ export async function deployStablecoin(
 ): Promise<USDC> {
   const supplyWei = ethers.utils.parseEther(supply);
   const USDC = await ethers.getContractFactory("USDC", deployer);
-  const stablecoin = await USDC.deploy(supplyWei) as USDC;
+  const stablecoin = await USDC.deploy(supplyWei);
   await ethers.provider.waitForTransaction(
     stablecoin.deployTransaction.hash,
     confirmations
@@ -79,7 +79,7 @@ export async function deployStakingContractFactory(
   );
   const stakingContractFactory = await StakingContractFactory.deploy(
     camoTokenAddress
-  ) as StakingContractFactory;
+  );
   await ethers.provider.waitForTransaction(
     stakingContractFactory.deployTransaction.hash,
     confirmations
@@ -96,10 +96,10 @@ export async function deployTokenTimelock(
   confirmations: number = config.confirmationsForDeploy
 ): Promise<TokenTimelock> {
   const tokenTimelockFactory = await ethers.getContractFactory(
-    "contracts/TokenTimelock.sol:TokenTimelock",
+    "TokenTimelock",
     deployer
   );
-  const tokenTimelock = await tokenTimelockFactory.deploy(camoTokenAddress) as TokenTimelock;
+  const tokenTimelock = await tokenTimelockFactory.deploy(camoTokenAddress);
   await ethers.provider.waitForTransaction(
     tokenTimelock.deployTransaction.hash,
     confirmations
@@ -133,7 +133,7 @@ export async function createStakingContract(
       return await ethers.getContractAt(
         "StakingContract",
         stakingContractAddress
-      ) as StakingContract;
+      );
     }
   }
   throw new Error("Issuer creation transaction failed.");
@@ -161,7 +161,7 @@ export async function createNodeOperator(
       console.log(
         `\nNodeOperator deployed\n\tAt address: ${nodeOperatorAddress}\n\tOwner: ${ownerAddress}\n\tStablecoin: ${stablecoin}`
       );
-      return await ethers.getContractAt("NodeOperator", nodeOperatorAddress) as NodeOperator;
+      return await ethers.getContractAt("NodeOperator", nodeOperatorAddress);
     }
   }
   throw new Error("Issuer creation transaction failed.");
