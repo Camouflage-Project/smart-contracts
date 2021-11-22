@@ -1,6 +1,7 @@
 import { ethers } from "hardhat";
-import { Contract, Signer } from "ethers";
+import { Signer } from "ethers";
 import { BigNumber } from "@ethersproject/bignumber";
+import { CamoToken, ERC20, NodeOperator, NodeOperatorFactory, StakingContract, StakingContractFactory, TokenTimelock, USDC } from "../typechain-types";
 
 const config = {
   confirmationsForDeploy: 1,
@@ -8,10 +9,10 @@ const config = {
 
 export async function deployNodeOperatorFactory(
   deployer: Signer,
-  camoTokenAddress: String,
-  stakingContractFactory: String,
+  camoTokenAddress: string,
+  stakingContractFactory: string,
   confirmations: number = config.confirmationsForDeploy
-): Promise<Contract> {
+): Promise<NodeOperatorFactory> {
   const NodeOperatorFactory = await ethers.getContractFactory(
     "NodeOperatorFactory",
     deployer
@@ -36,7 +37,7 @@ export async function deployCamoToken(
   symbol: string,
   supply: string,
   confirmations: number = config.confirmationsForDeploy
-): Promise<Contract> {
+): Promise<CamoToken> {
   const supplyWei = ethers.utils.parseEther(supply);
   const CamoToken = await ethers.getContractFactory("CamoToken", deployer);
   const camoToken = await CamoToken.deploy(name, symbol, supplyWei);
@@ -45,8 +46,7 @@ export async function deployCamoToken(
     confirmations
   );
   console.log(
-    `CamoToken deployed\n\tAt address: ${
-      camoToken.address
+    `CamoToken deployed\n\tAt address: ${camoToken.address
     }\n\tName:${await camoToken.name()}\n\tSymbol:${await camoToken.symbol()}\n\tSupply:${await camoToken.totalSupply()}`
   );
   return camoToken;
@@ -56,7 +56,7 @@ export async function deployStablecoin(
   deployer: Signer,
   supply: string,
   confirmations: number = config.confirmationsForDeploy
-): Promise<Contract> {
+): Promise<USDC> {
   const supplyWei = ethers.utils.parseEther(supply);
   const USDC = await ethers.getContractFactory("USDC", deployer);
   const stablecoin = await USDC.deploy(supplyWei);
@@ -70,9 +70,9 @@ export async function deployStablecoin(
 
 export async function deployStakingContractFactory(
   deployer: Signer,
-  camoTokenAddress: String,
+  camoTokenAddress: string,
   confirmations: number = config.confirmationsForDeploy
-): Promise<Contract> {
+): Promise<StakingContractFactory> {
   const StakingContractFactory = await ethers.getContractFactory(
     "StakingContractFactory",
     deployer
@@ -92,11 +92,11 @@ export async function deployStakingContractFactory(
 
 export async function deployTokenTimelock(
   deployer: Signer,
-  camoTokenAddress: String,
+  camoTokenAddress: string,
   confirmations: number = config.confirmationsForDeploy
-): Promise<Contract> {
+): Promise<TokenTimelock> {
   const tokenTimelockFactory = await ethers.getContractFactory(
-    "contracts/TokenTimelock.sol:TokenTimelock",
+    "TokenTimelock",
     deployer
   );
   const tokenTimelock = await tokenTimelockFactory.deploy(camoTokenAddress);
@@ -111,13 +111,14 @@ export async function deployTokenTimelock(
 }
 
 export async function createStakingContract(
-  stakingContractFactory: Contract,
+  stakingContractFactory: StakingContractFactory,
   staker: Signer,
   releaseTime: number
-): Promise<Contract> {
+): Promise<StakingContract> {
   const createStakingContractHash = await stakingContractFactory
     .connect(staker)
     .newStakingContract(releaseTime);
+
   const receipt = await ethers.provider.waitForTransaction(
     createStakingContractHash.hash
   );
@@ -140,10 +141,10 @@ export async function createStakingContract(
 
 export async function createNodeOperator(
   creator: Signer,
-  name: String,
-  nodeOperatorFactory: Contract,
+  name: string,
+  nodeOperatorFactory: NodeOperatorFactory,
   stablecoin: string
-): Promise<Contract> {
+): Promise<NodeOperator> {
   const nodeOperatorTxHash = await nodeOperatorFactory
     .connect(creator)
     .create(name, stablecoin);
@@ -169,20 +170,21 @@ export async function createNodeOperator(
 export async function transferERC20Token(
   from: Signer,
   to: string,
-  camoContract: Contract,
+  camoToken: CamoToken,
   amount: string
 ) {
   const amountWei = ethers.utils.parseEther(amount);
-  await camoContract.connect(from).transfer(to, amountWei);
+  await camoToken.connect(from).transfer(to, amountWei);
 }
 
 export async function approveSpendingCamoToken(
   from: Signer,
-  stakingContract: Contract,
+  stakingContract: StakingContract,
   amount: string
 ) {
   const amountWei = ethers.utils.parseEther(amount);
-  await stakingContract.connect(from).approveSpendToken(amountWei);
+  // TODO: add approveSpendToken function to StakingContract
+  // await stakingContract.connect(from).approveSpendToken(amountWei);
 }
 
 /*
@@ -191,8 +193,8 @@ export async function approveSpendingCamoToken(
   */
 export async function stake(
   staker: Signer,
-  camoToken: Contract,
-  stakingContract: Contract,
+  camoToken: CamoToken,
+  stakingContract: StakingContract,
   amount: string
 ) {
   const amountWei = ethers.utils.parseEther(amount);
@@ -200,7 +202,7 @@ export async function stake(
   await stakingContract.connect(staker).depositCamoTokens(amountWei);
 }
 
-export async function releaseStake(staker: Signer, stakingContract: Contract) {
+export async function releaseStake(staker: Signer, stakingContract: StakingContract) {
   await stakingContract.connect(staker).release();
 }
 
@@ -210,7 +212,7 @@ export async function getBlockTimestampInSeconds(): Promise<number> {
 }
 
 export async function getBalance(
-  token: Contract,
+  token: ERC20,
   address: string
 ): Promise<string> {
   return ethers.utils.formatEther(await token.balanceOf(address));
@@ -218,8 +220,8 @@ export async function getBalance(
 
 export async function payToNode(
   payer: Signer,
-  stablecoin: Contract,
-  nodeOperator: Contract,
+  stablecoin: USDC,
+  nodeOperator: NodeOperator,
   amount: string
 ) {
   const amountWei = ethers.utils.parseEther(amount);
@@ -227,21 +229,21 @@ export async function payToNode(
   await nodeOperator.connect(payer).depositStablecoin(amountWei);
 }
 
-export async function registerProxy(proxy: Signer, nodeOperator: Contract) {
+export async function registerProxy(proxy: Signer, nodeOperator: NodeOperator) {
   await nodeOperator.connect(proxy).registerProxy();
 }
 
-export async function payout(node: Signer, nodeOperator: Contract) {
+export async function payout(node: Signer, nodeOperator: NodeOperator) {
   await nodeOperator.connect(node).payout();
 }
 
-export async function getTimelockToken(owner: Signer, tokenTimelock: Contract) {
+export async function getTimelockToken(owner: Signer, tokenTimelock: TokenTimelock) {
   await tokenTimelock.connect(owner).token();
 }
 
 export async function lock(
   owner: Signer,
-  tokenTimelock: Contract,
+  tokenTimelock: TokenTimelock,
   address: string,
   releaseTime: string,
   amount: string
@@ -253,7 +255,7 @@ export async function lock(
 
 export async function release(
   owner: Signer,
-  tokenTimelock: Contract,
+  tokenTimelock: TokenTimelock,
   address: string
 ) {
   await tokenTimelock.connect(owner).release(address);
@@ -261,7 +263,7 @@ export async function release(
 
 export async function getBeneficiary(
   owner: Signer,
-  tokenTimelock: Contract,
+  tokenTimelock: TokenTimelock,
   address: string
 ): Promise<BeneficiaryData> {
   const beneficiaryData = await tokenTimelock
