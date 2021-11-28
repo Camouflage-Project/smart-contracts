@@ -9,15 +9,9 @@ import "@nomiclabs/hardhat-web3";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async (args, hre) => {
-  const accounts = await hre.ethers.getSigners();
+const EMPTY = ""
+const SEED_PHRASE = process.env.SEED_PHRASE || EMPTY
 
-  for (const account of accounts) {
-    console.log(await account.address);
-  }
-});
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -26,27 +20,27 @@ module.exports = {
   networks: {
     hardhat: {},
     mumbai: {
-      url: process.env.MUMBAI_RPC,
+      url: process.env.MUMBAI_RPC || EMPTY,
       accounts: {
-        mnemonic: process.env.SEED_PHRASE,
+        mnemonic: SEED_PHRASE,
       },
     },
     goerli: {
-      url: process.env.GOERLI_RPC,
+      url: process.env.GOERLI_RPC || EMPTY,
       accounts: {
-        mnemonic: process.env.SEED_PHRASE,
+        mnemonic: SEED_PHRASE,
       },
     },
     eth_mainnet: {
-      url: process.env.ETH_MAINNET_RPC,
+      url: process.env.ETH_MAINNET_RPC || EMPTY,
       accounts: {
-        mnemonic: process.env.SEED_PHRASE,
+        mnemonic: SEED_PHRASE,
       },
     },
     matic_mainnet: {
-      url: process.env.MATIC_RPC,
+      url: process.env.POLYGON_RPC || EMPTY,
       accounts: {
-        mnemonic: process.env.SEED_PHRASE,
+        mnemonic: SEED_PHRASE,
       },
     },
   },
@@ -63,3 +57,13 @@ module.exports = {
     enabled: process.env.REPORT_GAS ? true : false,
   },
 };
+
+// This is a sample Hardhat task. To learn how to create your own go to
+// https://hardhat.org/guides/create-task.html
+task("accounts", "Prints the list of accounts", async (args, hre) => {
+  const accounts = await hre.ethers.getSigners();
+
+  for (const account of accounts) {
+    console.log(await account.address);
+  }
+});

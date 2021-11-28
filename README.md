@@ -19,7 +19,7 @@ Camouflage Protocol v1.0 written in Solidity language.
 
 Set your `GOERLI_RPC` [environment variable.](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html). You can get one for free at [Alchemy's site.](https://www.alchemy.com/) You'll also need to set the variable `SEED_PHRASE`, which is your seed phrase from your wallet, ie MetaMask. This is needed for deploying contracts to public networks. You can optionally set your `PRIVATE_KEY` environment variable instead with some changes to the `hardhat.config.ts`.
 
-### Matic Mumbai Testnet
+### Polygon Mumbai Testnet
 
 Set your `MUMBAI_RPC` [environment variable](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html). You can get one for free at [Alchemy's site.](https://www.alchemy.com/). You'll also need to set the variable `SEED_PHRASE`, which is your seed phrase from your wallet, ie MetaMask. This is needed for deploying contracts to public networks. You can optionally set your `PRIVATE_KEY` environment variable instead with some changes to the `hardhat.config.ts`. You can obtain testnet MATIC via the [MATIC Faucet.](https://faucet.matic.network/)
 
@@ -40,7 +40,7 @@ Don't commit and push any changes to .env files that may contain sensitive infor
 ```
 GOERLI_RPC=https://eth-goerli.alchemyapi.io/v2/your_api_key
 MUMBAI_RPC=ttps://polygon-mumbai.g.alchemy.com/v2/your_api_key
-MATIC_RPC=https://polygon-mainnet.g.alchemy.com/v2/your_api_key
+POLYGON_RPC=https://polygon-mainnet.g.alchemy.com/v2/your_api_key
 ETH_MAINNET_RPC=https://eth-mainnet.alchemyapi.io/v2/your_api_key
 SEED_PHRASE=bla bla thunder unable field verify geal toward fossil ozone submit ozone
 ```
@@ -50,7 +50,7 @@ SEED_PHRASE=bla bla thunder unable field verify geal toward fossil ozone submit 
 ```
 export GOERLI_RPC=https://eth-goerli.alchemyapi.io/v2/your_api_key
 export MUMBAI_RPC=ttps://polygon-mumbai.g.alchemy.com/v2/your_api_key
-export MATIC_RPC=https://polygon-mainnet.g.alchemy.com/v2/your_api_key
+export POLYGON_RPC=https://polygon-mainnet.g.alchemy.com/v2/your_api_key
 export ETH_MAINNET_RPC=https://eth-mainnet.alchemyapi.io/v2/your_api_key
 export SEED_PHRASE=bla bla thunder unable field verify geal toward fossil  ozone submit ozone
 ```
