@@ -96,10 +96,10 @@ export async function deployTokenTimelock(
   confirmations: number = config.confirmationsForDeploy
 ): Promise<TokenTimelock> {
   const tokenTimelockFactory = await ethers.getContractFactory(
-    "TokenTimelock",
+    "contracts/TokenTimelock.sol:TokenTimelock",
     deployer
   );
-  const tokenTimelock = await tokenTimelockFactory.deploy(camoTokenAddress);
+  const tokenTimelock = await tokenTimelockFactory.deploy(camoTokenAddress) as TokenTimelock;
   await ethers.provider.waitForTransaction(
     tokenTimelock.deployTransaction.hash,
     confirmations
